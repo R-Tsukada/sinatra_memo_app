@@ -1,0 +1,1 @@
+{"memos":[{"id":1,"title":"ELLEGARDEN","text":"虹"},{"id":2,"title":"SPECIAL OTHERS","text":"AIMS"},{"id":3,"title":"BUMP OF CHICKEN","text":"ガラスのブルース"},{"id":4,"title":"the HIATUS","text":"INSOMNIA"},{"id":2,"title":"memo_title","text":"memo_text"}]}

@@ -1,0 +1,15 @@
+<body>
+<h1>memo's</h1>
+<form action= "/new" >
+  <div class="new_memo_icon">
+    <i class="fas fa-pen fa-1x fa-white"><a href="/new" class="new_memo_button">New Memo</a></i>
+  </div>
+</form>
+<div>
+  <ul class="container">
+    <% @contents["memos"].each do |content| %>
+    <li><a href="/<%= content["id"]%>"> <%= content["title"] %></a></li>
+    <% end %>
+  </ul>
+</div>
+</body>
