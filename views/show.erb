@@ -1,23 +1,13 @@
-<body>
-<h1>memo's</h1>
-<% @contents["memos"].each do |content| %>
-  <% if content["id"] == @id.to_i %>
-    <div class="container-show">
-      <p class="show-title"><%= @memo_title = content["title"] %></p>
-      <p class="show-text"><%= content["text"].gsub(/\r\n/, '<br/>') %></p>
-    </div>
-    <div class="container-show-submit">
-      <form action="<%= content["id"] %>/edit" method="get">
-        <button type="submit" class="show-submit-change"><i class="far fa-edit" ></i>edit</button>
-      </form>
-      <form action="/<%= content["id"] %>" method="post">
-        <input type ='hidden' name='_method' value="delete" >
-        <button type ="submit" class="show-submit-delete"><i class="far fa-trash-alt"></i>delete</button>
-      </form>
-      <form action="/" method="get">
-        <button type="submit" class="show-submit-back"><i class="fas fa-home"></i>home</button>
-      </form>
-    </div>
-  <% end %>
-<% end %>
-</body>
+<p><%= @title %></p>
+<p><%= @text.gsub(/\r\n/, '<br/>') %></p>
+<form action="<%= @id %>/edit" method="get">
+  <button type="submit">edit</button>
+</form>
+<form action="/<%= @id %>" method="post">
+  <input type='hidden' name='_method' value="delete">
+  <button type="submit">delete</button>
+</form>
+<form action="/" method="get">
+  <button type="submit">home</button>
+</form>
+

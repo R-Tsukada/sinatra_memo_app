@@ -1,18 +1,11 @@
-<body>
-<h1>memo's</h1>
-<% @contents["memos"].each do |content| %>
-  <% if content["id"] == @id.to_i %>
-    <form method="post" action="/<%= content["id"] %>/edit">
-      <h2>title</h2>
-      <label><textarea name="memo_title" class="memo-title-edit" ><%= content["title"] %></textarea></label>
-      <h2>memo</h2>
-      <label><textarea name="memo_text" ><%= content["text"] %></textarea></label>
-      <input type= "hidden" name="_method" value="PATCH">
-      <button type = "submit" >change</button>
-    </form>
-    <form action="/" method="get" >
-      <button type="submit" class="back_to_top">home</button>
-    </form>
-  <% end %>
-<% end %>
-</body>
+<form method="post" action="/<%= @id %>/edit">
+  <h2>title</h2>
+  <label><textarea name="memo_title"><%= @title %></textarea></label>
+  <h2>memo</h2>
+  <label><textarea name="memo_text"><%= @text %></textarea></label>
+  <input type= "hidden" name="_method" value="PATCH">
+  <button type = "submit" >change</button>
+</form>
+<form action="/" method="get">
+  <button type="submit" >home</button>
+</form>
