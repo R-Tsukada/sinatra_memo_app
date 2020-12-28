@@ -1,10 +1,14 @@
-<form action="/" method="post">
-  <p>タイトル</p>
-  <label><textarea name="title"></textarea></label>
-  <p>メモ本文</p>
-  <label><textarea name="text"></textarea></label>
-  <button type="submit">save</button>
-</form>
-<form action="/" method="get">
-  <button type="submit" value="home">home</button>
-</form>
+<section class="post-item">
+  <div class="post-category">Title</div>
+  <form action="/" method="post">
+  <label><textarea name="title" class="post-category-textarea"></textarea></label>
+  <div class="post-category">Memo</div>
+  <label><textarea name="text" class="post-text-textarea"></textarea></label>
+    <button type="submit" class="post-save-button">save</button>
+  </form>
+</section>
+<section class="post-item-form">
+  <form action="/" method="get">
+    <button type="submit" value="home" class="post-home-button">home</button>
+  </form>
+</section>

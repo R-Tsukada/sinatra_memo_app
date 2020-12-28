@@ -1,13 +1,22 @@
-<p><%= @title %></p>
-<p><%= @text.gsub(/\r\n/, '<br/>') %></p>
-<form action="<%= @id %>/edit" method="get">
-  <button type="submit">edit</button>
-</form>
-<form action="/<%= @id %>" method="post">
-  <input type='hidden' name='_method' value="delete">
-  <button type="submit">delete</button>
-</form>
-<form action="/" method="get">
-  <button type="submit">home</button>
-</form>
-
+<section class="show-item">
+  <div class="show-category"><%= @title %></div>
+  <p class="show-description"><%= @text.gsub(/\r\n/, '<br/>') %></p>
+</section>
+<section class="show-form">
+  <div>
+    <form action="<%= @id %>/edit" method="get">
+      <button type="submit" class="show-edit-button">edit</button>
+    </form>
+  </div>
+  <div>
+    <form action="/<%= @id %>" method="post">
+      <input type='hidden' name='_method' value="delete">
+      <button type="submit" class="show-delete-button">delete</button>
+    </form>
+  </div>
+  <div>
+    <form action="/" method="get">
+      <button type="submit" class="show-home-button"> home </button>
+    </form>
+  </div>
+</section>
