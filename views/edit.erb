@@ -1,11 +1,14 @@
-<form method="post" action="/<%= @id %>/edit">
-  <h2>title</h2>
-  <label><textarea name="memo_title"><%= @title %></textarea></label>
-  <h2>memo</h2>
-  <label><textarea name="memo_text"><%= @text %></textarea></label>
-  <input type= "hidden" name="_method" value="PATCH">
-  <button type = "submit" >change</button>
-</form>
-<form action="/" method="get">
-  <button type="submit" >home</button>
-</form>
+<section class="edit-item">
+  <div class="edit-category">title</div>
+  <form method="post" action="/<%= @id %>/edit" class="edit-category-form">
+    <label><textarea name="memo_title" class="edit-category-textarea"><%= @title %></textarea></label>
+    <div class="edit-category">memo</div>
+    <label><textarea name="memo_text" class="edit-description-textarea"><%= @text %></textarea></label>
+    <input type= "hidden" name="_method" value="PATCH">
+    <button type = "submit" class="edit-change-button">change</button>
+  </form>
+  <form action="/" method="get">
+    <button type="submit" class="edit-home-button">home</button>
+  </form>
+</section>
+
