@@ -2,116 +2,100 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
 
-#class MyApp < Sinatra::Base
-#  configure :production, :development do
-#    enable :logging
-#  end
-=begin
-  def initialize(json_file_path, json, json_data, list)
-    @json_file_path = json_file_path
-    @json = json
-    @json_data = json_data
-    @list = list
+json_file_path = './memo.json'
+json = File.open(json_file_path).read
+json_data = JSON.parse(json)
+list = json_data["memos"]
+
+def file_save_to_json(json_file_path, json_data)
+  File.open(json_file_path, 'w') do |io|
+    JSON.dump(json_data, io)
   end
+end
 
-  def self.json_data
-    json_file_path = './memo.json'
-    json = File.open(json_file_path).read
-    json_data = JSON.parse(json)
-    list = json_data["memos"]
-    MyApp.new(json_file_path, json, json_data, list)
-  end
-=end
+def new_file(list, json_data)
+  list.push({ "id" => json_data["memos"].size + 1, "title" => @title, "text" => @text })
+end
 
-  json_file_path = './memo.json'
-  json = File.open(json_file_path).read
-  json_data = JSON.parse(json)
-  list = json_data["memos"]
+def change_file(list)
+  list[@id.to_i - 1] = { "id" => @id.to_i, "title" => @memo_title, "text" => @memo_text }
+end
 
-  # ------------------トップページ----------------------
-  get '/' do
-    @lists = list
-    erb :top
-  end
-
-  # ------------------メモ新規作成----------------------
-  get '/new' do
-    erb :post
-  end
-
-  post '/' do
-    @title = params[:title]
-    @text = params[:text]
-
-    list.push({ "id" => json_data["memos"].size + 1, "title" => @title, "text" => @text })
-
-    #ファイルの保存
-    File.open(json_file_path, 'w') do |io|
-      JSON.dump(json_data, io)
+def file_title_and_text(list)
+  list.each do |file|
+    if file["id"] == @id.to_i
+      @title = file["title"]
+      @text = file["text"]
     end
-
-    redirect to('/')
-    erb :post
   end
+end
 
-  # ------------------メモ詳細----------------------
-  get '/:id' do
-    @id = params[:id]
+# ------------------トップページ----------------------
+get '/' do
+  @lists = list
+  erb :top
+end
 
-    @lists = list
-    @lists.each do |file|
-      if file["id"] == @id.to_i
-        @title = file["title"]
-        @text = file["text"]
-      end
-    end
+# ------------------メモ新規作成----------------------
+get '/new' do
+  erb :post
+end
 
-    erb :show
-  end
+post '/' do
+  @title = params[:title]
+  @text = params[:text]
 
-  delete '/:id' do
-    @id = params[:id]
+  new_file(list, json_data)
 
-    @lists = list
-    @lists.delete_at(@id.to_i - 1)
+  #ファイルの保存
+  file_save_to_json(json_file_path, json_data)
 
-    # ファイルの保存
-    File.open(json_file_path, 'w') do |io|
-      JSON.dump(json_data, io)
-    end
+  redirect to('/')
+  erb :post
+end
 
-    redirect to('/')
-    erb :top
-  end
+# ------------------メモ詳細----------------------
+get '/:id' do
+  @id = params[:id]
 
-  # ------------------メモ編集----------------------
-  get '/:id/edit' do
-    @id = params[:id]
+  file_title_and_text(list)
 
-    @lists = list
-    @lists.each do |file|
-      if file["id"] == @id.to_i
-        @title = file["title"]
-        @text = file["text"]
-      end
-    end
+  erb :show
+end
 
-    erb :edit
-  end
+delete '/:id' do
+  @id = params[:id]
 
-  patch '/:id/edit' do
-    @id = params[:id]
-    @memo_title = params[:memo_title]
-    @memo_text = params[:memo_text]
+  @lists = list
+  @lists.delete_at(@id.to_i - 1)
 
-    list[@id.to_i - 1] = { "id" => @id.to_i, "title" => @memo_title, "text" => @memo_text }
+  # ファイルの保存
+  file_save_to_json(json_file_path, json_data)
 
-    # ファイルの保存
-    File.open(json_file_path, 'w') do |io|
-      JSON.dump(json_data, io)
-    end
+  redirect to('/')
+  erb :top
+end
 
-    redirect to('/')
-    erb :edit
-  end
+# ------------------メモ編集----------------------
+get '/:id/edit' do
+  @id = params[:id]
+
+  file_title_and_text(list)
+
+  erb :edit
+end
+
+patch '/:id/edit' do
+  @id = params[:id]
+  @memo_title = params[:memo_title]
+  @memo_text = params[:memo_text]
+
+  change_file(list)
+
+  # ファイルの保存
+  file_save_to_json(json_file_path, json_data)
+
+  redirect to('/')
+  erb :edit
+end
 #end
