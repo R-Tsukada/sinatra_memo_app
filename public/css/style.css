@@ -1,0 +1,342 @@
+h1 {
+  text-align: center;
+  color: #777;
+}
+
+a {
+  text-decoration: none;
+}
+
+.new-memo-text {
+  color: #777;
+}
+
+.new_memo_button {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  border: 1px solid;
+  text-align: center;
+  width: 100px;
+  margin: 20px 10px 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #777;
+  font-weight: bold;
+}
+
+.new_memo_button > a {
+  display: block;
+  margin: -8px -8px -11px;
+  padding: 8px 8px 11px;
+  border-radius: inherit;
+  color: #777;
+  transition: all 0.3s;
+}
+
+.new_memo_button:hover {
+  box-shadow: 0 0 6px -1px rgba(0, 0, 0, 0.3);
+  opacity: 0.8;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  padding: 20px 8px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.item .category {
+  margin: 15px 9px 10px;
+  color: #aaa;
+  letter-spacing: 1px;
+  text-align: center;
+  font-family: "Trebuchet MS", "Hiragino Maru Gothic ProN", Meiryo, sans-serif;
+}
+
+.item .category::before {
+  content: " ";
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  margin-right: 5px;
+  border: 2px solid #aaaaaa;
+  border-radius: 50%;
+  vertical-align: -5px;
+}
+
+.item .description {
+  margin: 10px;
+  line-height: 1.5;
+}
+
+.item > a {
+  display: block;
+  margin: -8px -8px -11px;
+  padding: 8px 8px 11px;
+  border-radius: inherit;
+  color: #777;
+  transition: all 0.3s;
+}
+
+.item > a:hover {
+  box-shadow: 0 0 6px -1px rgba(0, 0, 0, 0.3);
+  opacity: 0.8;
+}
+
+/*------メモ詳細ページ-------*/
+.show-item {
+  width: 100%;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.show-item .show-category {
+  width: 80%;
+  margin: auto;
+  height: 50px;
+  color: black;
+  border: solid 1px;
+  border-radius: 5px;
+  padding-top: 15px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-size: 32px;
+  font-family: "Trebuchet MS", "Hiragino Maru Gothic ProN", Meiryo, sans-serif;
+}
+
+.show-item .show-description {
+  width: 80%;
+  height: 200px;
+  margin: 10px auto;
+  line-height: 1.5;
+  border: solid 1px;
+  border-radius: 5px;
+  color: black;
+  font-family: "Trebuchet MS", "Hiragino Maru Gothic ProN", Meiryo, sans-serif;
+}
+
+.show-form {
+  position: relative;
+  width: 100%;
+}
+
+.show-form .show-edit-button {
+  position: absolute;
+  top: 0;
+  left: 78%;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.show-form .show-edit-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+
+.show-form .show-delete-button {
+  position: absolute;
+  top: 0;
+  left: 84.5%;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.show-form .show-delete-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+
+.show-form .show-home-button {
+  position: absolute;
+  top: 45px;
+  left: 84.7%;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.show-form .show-home-button:hover {
+/*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+
+/*------メモ編集ページ-------*/
+.edit-item {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.edit-item .edit-category {
+  margin: 15px 9px 10px;
+  color: #aaa;
+  font-size: 50px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: "Trebuchet MS", "Hiragino Maru Gothic ProN", Meiryo, sans-serif;
+}
+
+.edit-item .edit-category-textarea {
+  width: 80%;
+  height: 50px;
+  font-size: 32px;
+  text-align: center;
+  vertical-align: center;
+}
+
+.edit-item .edit-description-textarea {
+  position: relative;
+  top: 0;
+  left: 37px;
+  width: 80%;
+  height: 250px;
+  font-size: 24px;
+}
+
+.edit-item .edit-change-button {
+  position: relative;
+  top: 30px;
+  right: 120px;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.edit-item .edit-change-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+
+.edit-item .edit-home-button {
+  position: relative;
+  top: -5px;
+  left: 392px;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.edit-item .edit-home-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+/*------メモ新規作成--------*/
+.post-item {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.post-item .post-category {
+  margin: 15px 9px 10px;
+  color: #aaa;
+  font-size: 50px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: "Trebuchet MS", "Hiragino Maru Gothic ProN", Meiryo, sans-serif;
+}
+
+.post-item .post-category-textarea {
+  width: 80%;
+  height: 50px;
+  font-size: 32px;
+  text-align: center;
+  vertical-align: center;
+}
+
+.post-item .post-text-textarea {
+  position: relative;
+  top: 0;
+  left: 25px;
+  width: 80%;
+  height: 150px;
+  font-size: 24px;
+}
+
+.post-item .post-save-button {
+  position: relative;
+  top: 30px;
+  right: 110px;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.post-item .post-save-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
+
+.post-item-form {
+  position: relative;
+  top: 20px;
+}
+
+.post-item-form .post-home-button {
+  position: absolute;
+  top: -36px;
+  right: 105px;
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background-color: #fff;/*ボタン色*/
+  color: #777;
+  border-bottom: solid 4px #627295;
+  border-radius: 3px;
+}
+
+.post-item .post-home-button:hover {
+  /*ボタンを押したとき*/
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);/*下に動く*/
+  border-bottom: none;/*線を消す*/
+}
