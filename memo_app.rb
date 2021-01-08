@@ -3,7 +3,28 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'json'
+require 'pg'
 
+def connect_to_sql
+  connection = PG.connect( dbname: 'memo_app')
+end
+
+def load_by_sql_data(connection)
+
+end
+
+def memo_create_to_sql
+
+end
+
+def memo_edit
+
+end
+
+def memo_delete
+
+end
+#---------json_file--------------
 json_file_path = './memo.json'
 json = File.open(json_file_path).read
 json_data = JSON.parse(json)
@@ -31,9 +52,11 @@ def name_and_text_that_matches_id_from_json(list)
     end
   end
 end
+#----------------------------------------------------
 
 get '/' do
   @lists = list
+  @memo = PG.connect( dbname: 'memo_app' )
   erb :top
 end
 
@@ -46,7 +69,6 @@ post '/' do
   @text = params[:text]
 
   add_memo_elements_to_json_file(list, json_data)
-
   update_json_file(json_file_path, json_data)
 
   redirect to('/')

@@ -9,5 +9,13 @@
       <div class="category"><%= content["title"] %></div>
       <p class="description"><%= content["text"] %></p>
     </a>
+  <% end %>
+  <% @memo.exec("SELECT * FROM Memo") do |result| %>
+    <% result.each do |row| %>
+      <a href="/<%= row.values_at("user_id") %>">
+        <div><%= row.values_at("memo_title") %></div>
+        <p><%= row.values_at("memo_text") %></p>
+      </a>
     <% end %>
+  <% end %>
 </section>
