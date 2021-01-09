@@ -5,112 +5,110 @@ require 'sinatra/reloader'
 require 'json'
 require 'pg'
 
-def connect_to_sql
-  connection = PG.connect( dbname: 'memo_app')
-end
+class Memo
 
-def load_by_sql_data(connection)
-
-end
-
-def memo_create_to_sql
-
-end
-
-def memo_edit
-
-end
-
-def memo_delete
-
-end
-#---------json_file--------------
-json_file_path = './memo.json'
-json = File.open(json_file_path).read
-json_data = JSON.parse(json)
-list = json_data['memos']
-
-def update_json_file(json_file_path, json_data)
-  File.open(json_file_path, 'w') do |io|
-    JSON.dump(json_data, io)
+  def initialize(connection)
+    @connection = connection
   end
-end
 
-def add_memo_elements_to_json_file(list, json_data)
-  list.push({ 'id' => json_data['memos'].size + 1, 'title' => @title, 'text' => @text })
-end
+  def self.connect_to_sql
+    connection = PG::connect(
+    :host => "localhost",
+    :user => 'ryotsukada',
+    :password => 'Aochan1123',
+    :dbname => 'memo_app'
+    )
+    Memo.new(connection)
+  end
 
-def change_the_elements_of_json(list)
-  list[@id.to_i - 1] = { 'id' => @id.to_i, 'title' => @memo_title, 'text' => @memo_text }
-end
-
-def name_and_text_that_matches_id_from_json(list)
-  list.each do |file|
-    if file['id'] == @id.to_i
-      @title = file['title']
-      @text = file['text']
+  def load_by_sql_data(user_id = nil)
+    results = if user_id
+                @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
+              else
+                @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
+              end
+    memos = {}
+    results.each do |result|
+      memos[result['user_id']] = { 'memo_title' => result['memo_title'], 'memo_text' => result['memo_text'] }
     end
+    memos
+  end
+
+  def data_create(memo_title, memo_text)
+    sql = <<~SQL
+      INSERT INTO Memo (memo_title, memo_text)
+      VALUES($1, $2)
+    SQL
+    @connection.exec_params(sql, [memo_title, memo_text])
+  end
+
+  def data_delete(user_id)
+    sql = <<~SQL
+      DELETE FROM Memo
+      WHERE user_id = $1
+    SQL
+    @connection.exec_params(sql, [user_id])
+  end
+
+  def data_edit(memo_title, memo_text, user_id)
+    sql = <<~SQL
+      UPDATE Memo
+      SET memo_text = $1, memo_title = $2
+      WHERE user_id = $3
+    SQL
+    @connection.exec_params(sql, [memo_title, memo_text, user_id])
   end
 end
-#----------------------------------------------------
 
-get '/' do
-  @lists = list
-  @memo = PG.connect( dbname: 'memo_app' )
-  erb :top
-end
+  get '/' do
+    memo = Memo.connect_to_sql
+    @memo_list = memo.load_by_sql_data
+    erb :top
+  end
 
-get '/new' do
-  erb :post
-end
+  get '/new' do
+    erb :post
+  end
 
-post '/' do
-  @title = params[:title]
-  @text = params[:text]
+  post '/' do
+    memo_title = params[:memo_title]
+    memo_text = params[:memo_text]
+    memo = Memo.connect_to_sql
+    memo.data_create(memo_title, memo_text)
+    redirect to('/')
+    erb :post
+  end
 
-  add_memo_elements_to_json_file(list, json_data)
-  update_json_file(json_file_path, json_data)
+  get '/:id' do
+    @id = params[:id]
+    memo = Memo.connect_to_sql
+    @memo_list = memo.load_by_sql_data(@id)
 
-  redirect to('/')
-  erb :post
-end
+    erb :show
+  end
 
-get '/:id' do
-  @id = params[:id]
+  delete '/:id' do
+    @id = params[:id]
+    memo = Memo.connect_to_sql
+    memo.data_delete(@id)
+    redirect to('/')
+    erb :top
+  end
 
-  name_and_text_that_matches_id_from_json(list)
+  get '/:id/edit' do
+    @id = params[:id]
+    memo = Memo.connect_to_sql
+    @memo_list = memo.load_by_sql_data(@id)
 
-  erb :show
-end
+    erb :edit
+  end
 
-delete '/:id' do
-  @id = params[:id]
-
-  list.delete_at(@id.to_i - 1)
-
-  update_json_file(json_file_path, json_data)
-
-  redirect to('/')
-  erb :top
-end
-
-get '/:id/edit' do
-  @id = params[:id]
-
-  name_and_text_that_matches_id_from_json(list)
-
-  erb :edit
-end
-
-patch '/:id/edit' do
-  @id = params[:id]
-  @memo_title = params[:memo_title]
-  @memo_text = params[:memo_text]
-
-  change_the_elements_of_json(list)
-
-  update_json_file(json_file_path, json_data)
-
-  redirect to('/')
-  erb :edit
-end
+  patch '/:id/edit' do
+    @id = params[:id]
+    memo_title = params[:memo_title]
+    memo_text = params[:memo_text]
+    memo = Memo.connect_to_sql
+    memo.data_edit(memo_title, memo_text, @id)
+    redirect to('/')
+    erb :edit
+  end
