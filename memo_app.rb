@@ -20,12 +20,8 @@ class MemoApp
     MemoApp.new(connection)
   end
 
-  def loading_sql_data(user_id = nil)
-    sql_data = if user_id
-                 @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
-               else
-                 @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
-               end
+  def loading_sql_data
+    sql_data = @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
     memos = {}
     sql_data.each do |datum|
       memos[datum['user_id']] = { 'memo_title' => datum['memo_title'], 'memo_text' => datum['memo_text'] }
@@ -81,7 +77,7 @@ end
 get '/:id' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo_list = memo.loading_sql_data(@id)
+  @memo_list = memo.loading_sql_data
 
   erb :show
 end
@@ -97,7 +93,7 @@ end
 get '/:id/edit' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo_list = memo.loading_sql_data(@id)
+  @memo_list = memo.loading_sql_data
 
   erb :edit
 end
