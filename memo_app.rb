@@ -2,7 +2,6 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require 'pg'
 
 class MemoApp
@@ -20,20 +19,20 @@ class MemoApp
     MemoApp.new(connection)
   end
 
-  def loading_sql_data(user_id = nil)
-    sql_data = if user_id
+  def memo_records(user_id = nil)
+    memos = if user_id
                  @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
                else
                  @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
                end
-    memos = {}
-    sql_data.each do |datum|
-      memos[datum['user_id']] = { 'memo_title' => datum['memo_title'], 'memo_text' => datum['memo_text'] }
+    memos_rows = {}
+    memos.each do |memo|
+      memos_rows[memo['user_id']] = { 'memo_title' => memo['memo_title'], 'memo_text' => memo['memo_text'] }
     end
-    memos
+    memos_rows
   end
 
-  def data_create(memo_title, memo_text)
+  def create_memos(memo_title, memo_text)
     sql = <<~SQL
       INSERT INTO Memo (memo_title, memo_text)
       VALUES($1, $2)
@@ -41,7 +40,7 @@ class MemoApp
     @connection.exec_params(sql, [memo_title, memo_text])
   end
 
-  def data_delete(user_id)
+  def delete_memos(user_id)
     sql = <<~SQL
       DELETE FROM Memo
       WHERE user_id = $1
@@ -49,7 +48,7 @@ class MemoApp
     @connection.exec_params(sql, [user_id])
   end
 
-  def data_edit(memo_title, memo_text, user_id)
+  def edit_memos(memo_title, memo_text, user_id)
     sql = <<~SQL
       UPDATE Memo
       SET memo_title = $1, memo_text = $2
@@ -61,7 +60,7 @@ end
 
 get '/' do
   memo = MemoApp.connect_to_sql
-  @memo_list = memo.loading_sql_data
+  @memo = memo.memo_records
   erb :top
 end
 
@@ -73,23 +72,23 @@ post '/' do
   memo_title = params[:memo_title]
   memo_text = params[:memo_text]
   memo = MemoApp.connect_to_sql
-  memo.data_create(memo_title, memo_text)
+  memo.create_memos(memo_title, memo_text)
   redirect to('/')
   erb :post
 end
 
 get '/:id' do
   @id = params[:id]
-  memo = MemoApp.connect_to_sql
-  @memo_list = memo.loading_sql_data(@id)
 
+  memo = MemoApp.connect_to_sql
+  @memo = memo.memo_records(@id)
   erb :show
 end
 
 delete '/:id' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  memo.data_delete(@id)
+  memo.delete_memos(@id)
   redirect to('/')
   erb :top
 end
@@ -97,8 +96,7 @@ end
 get '/:id/edit' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo_list = memo.loading_sql_data(@id)
-
+  @memo = memo.memo_records(@id)
   erb :edit
 end
 
@@ -107,7 +105,7 @@ patch '/:id/edit' do
   memo_title = params[:memo_title]
   memo_text = params[:memo_text]
   memo = MemoApp.connect_to_sql
-  memo.data_edit(memo_title, memo_text, @id)
+  memo.edit_memos(memo_title, memo_text, @id)
   redirect to('/')
   erb :edit
 end

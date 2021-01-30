@@ -1,9 +1,9 @@
 <section class="edit-item">
   <div class="edit-category">title</div>
   <form method="post" action="/<%= @id %>/edit" class="edit-category-form">
-    <label><textarea name="memo_title" class="edit-category-textarea"><%= @memo_list[@id]["memo_title"] %></textarea></label>
+    <label><textarea name="memo_title" class="edit-category-textarea"><%= @memo[@id]["memo_title"] %></textarea></label>
     <div class="edit-category">memo</div>
-    <label><textarea name="memo_text" class="edit-description-textarea"><%= @memo_list[@id]["memo_text"] %></textarea></label>
+    <label><textarea name="memo_text" class="edit-description-textarea"><%= @memo[@id]["memo_text"] %></textarea></label>
     <input type= "hidden" name="_method" value="PATCH">
     <button type = "submit" class="edit-change-button">change</button>
   </form>
