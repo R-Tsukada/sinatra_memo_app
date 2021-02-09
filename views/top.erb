@@ -4,8 +4,8 @@
   </form>
 </section>
 <section class="item">
-  <% @memo.each do |id, memo| %>
-      <a href="/<%= id %>">
+  <% @memo.each do |memo| %>
+      <a href="/<%= memo["user_id"]%>">
         <div class="category"><%= memo["memo_title"] %></div>
         <p class="description"><%= memo["memo_text"] %></p>
       </a>

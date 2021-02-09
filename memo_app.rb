@@ -19,17 +19,12 @@ class MemoApp
     MemoApp.new(connection)
   end
 
-  def memo_records(user_id = nil)
-    memos_rows = if user_id
-                   @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
-                 else
-                   @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
-                 end
-    memos = {}
-    memos_rows.each do |r|
-      memos[r['user_id']] = { 'memo_title' => r['memo_title'], 'memo_text' => r['memo_text'] }
-    end
-    memos
+  def find_memos
+    @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
+  end
+
+  def find_memo_by_id(user_id)
+    @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
   end
 
   def create_memos(memo_title, memo_text)
@@ -60,7 +55,7 @@ end
 
 get '/' do
   memo = MemoApp.connect_to_sql
-  @memo = memo.memo_records
+  @memo = memo.find_memos
   erb :top
 end
 
@@ -80,7 +75,7 @@ end
 get '/:id' do
   @id = params[:id]
   sql = MemoApp.connect_to_sql
-  @memo = sql.memo_records(@id)
+  @memo = sql.find_memo_by_id(@id)
   erb :show
 end
 
@@ -95,7 +90,7 @@ end
 get '/:id/edit' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo = memo.memo_records(@id)
+  @memo = memo.find_memo_by_id(@id)
   erb :edit
 end
 
