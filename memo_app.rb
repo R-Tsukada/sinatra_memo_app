@@ -13,7 +13,7 @@ class MemoApp
     connection = PG.connect(
       host: 'localhost',
       user: 'ryotsukada',
-      password: 'Aochan1123',
+      password: ENV['password'],
       dbname: 'memo_app'
     )
     MemoApp.new(connection)
@@ -24,7 +24,7 @@ class MemoApp
   end
 
   def find_memo_by_id(memo_id)
-    @connection.exec_params('SELECT * FROM Memo WHERE memo_id = $1', [memo_id])
+    @connection.exec_params('SELECT * FROM Memo WHERE memo_id = $1', [memo_id]).first
   end
 
   def create_memos(memo_title, memo_text)
@@ -75,7 +75,7 @@ end
 get '/:id' do
   @id = params[:id]
   sql = MemoApp.connect_to_sql
-  @memo = sql.find_memo_by_id(@id).first
+  @memo = sql.find_memo_by_id(@id)
   erb :show
 end
 
@@ -90,7 +90,7 @@ end
 get '/:id/edit' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo = memo.find_memo_by_id(@id).first
+  @memo = memo.find_memo_by_id(@id)
   erb :edit
 end
 
