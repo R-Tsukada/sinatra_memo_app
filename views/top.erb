@@ -4,10 +4,10 @@
   </form>
 </section>
 <section class="item">
-  <% @lists.each do |content| %>
-    <a href="/<%= content["id"] %>">
-      <div class="category"><%= content["title"] %></div>
-      <p class="description"><%= content["text"] %></p>
-    </a>
+  <% @memo.each do |memo| %>
+      <a href="/<%= memo["memo_id"]%>">
+        <div class="category"><%= memo["memo_title"] %></div>
+        <p class="description"><%= memo["memo_text"] %></p>
+      </a>
     <% end %>
 </section>

@@ -1,6 +1,6 @@
 <section class="show-item">
-  <div class="show-category"><%= @title %></div>
-  <p class="show-description"><%= @text.gsub(/\r\n/, '<br/>') %></p>
+  <div class="show-category"><%= @memo["memo_title"] %></div>
+  <p class="show-description"><%= @memo["memo_text"].gsub(/\r\n/, '<br/>') %></p>
 </section>
 <section class="show-form">
   <div>
