@@ -5,7 +5,7 @@
 </section>
 <section class="item">
   <% @memo.each do |memo| %>
-      <a href="/<%= memo["user_id"]%>">
+      <a href="/<%= memo["memo_id"]%>">
         <div class="category"><%= memo["memo_title"] %></div>
         <p class="description"><%= memo["memo_text"] %></p>
       </a>

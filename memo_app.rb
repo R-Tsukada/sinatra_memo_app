@@ -20,11 +20,11 @@ class MemoApp
   end
 
   def find_memos
-    @connection.exec_params('SELECT * FROM Memo ORDER BY user_id')
+    @connection.exec_params('SELECT * FROM Memo ORDER BY memo_id')
   end
 
-  def find_memo_by_id(user_id)
-    @connection.exec_params('SELECT * FROM Memo WHERE user_id = $1 ORDER BY user_id', [user_id])
+  def find_memo_by_id(memo_id)
+    @connection.exec_params('SELECT * FROM Memo WHERE memo_id = $1 ORDER BY memo_id', [memo_id])
   end
 
   def create_memos(memo_title, memo_text)
@@ -35,21 +35,21 @@ class MemoApp
     @connection.exec_params(sql, [memo_title, memo_text])
   end
 
-  def delete_memos(user_id)
+  def delete_memos(memo_id)
     sql = <<~SQL
       DELETE FROM Memo
-      WHERE user_id = $1
+      WHERE memo_id = $1
     SQL
-    @connection.exec_params(sql, [user_id])
+    @connection.exec_params(sql, [memo_id])
   end
 
-  def edit_memos(memo_title, memo_text, user_id)
+  def edit_memos(memo_title, memo_text, memo_id)
     sql = <<~SQL
       UPDATE Memo
       SET memo_title = $1, memo_text = $2
-      WHERE user_id = $3
+      WHERE memo_id = $3
     SQL
-    @connection.exec_params(sql, [memo_title, memo_text, user_id])
+    @connection.exec_params(sql, [memo_title, memo_text, memo_id])
   end
 end
 
