@@ -75,7 +75,7 @@ end
 get '/:id' do
   @id = params[:id]
   sql = MemoApp.connect_to_sql
-  @memo = sql.find_memo_by_id(@id)
+  @memo = sql.find_memo_by_id(@id).first
   erb :show
 end
 
@@ -90,7 +90,7 @@ end
 get '/:id/edit' do
   @id = params[:id]
   memo = MemoApp.connect_to_sql
-  @memo = memo.find_memo_by_id(@id)
+  @memo = memo.find_memo_by_id(@id).first
   erb :edit
 end
 
