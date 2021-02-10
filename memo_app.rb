@@ -24,7 +24,7 @@ class MemoApp
   end
 
   def find_memo_by_id(memo_id)
-    @connection.exec_params('SELECT * FROM Memo WHERE memo_id = $1 ORDER BY memo_id', [memo_id])
+    @connection.exec_params('SELECT * FROM Memo WHERE memo_id = $1', [memo_id])
   end
 
   def create_memos(memo_title, memo_text)
